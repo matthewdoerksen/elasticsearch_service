@@ -13,11 +13,23 @@
     <artifactId>service</artifactId>
 
     <dependencies>
+        <!--
+            Only things that only the service depends on should be included here.
+        -->
+
         <dependency>
             <groupId>com.doerksen</groupId>
             <artifactId>client</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <!--
+           Frameworks used in the service, e.g. Dependency Injection, Database
+        -->
+
+        <!--
+            External service clients
+        -->
     </dependencies>
 
     <build>
