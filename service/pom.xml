@@ -22,6 +22,14 @@
             <artifactId>client</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <!--
+           Frameworks used in the service, e.g. Dependency Injection, Database
+        -->
+
+        <!--
+            External service clients
+        -->
     </dependencies>
 
     <build>

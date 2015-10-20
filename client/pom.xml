@@ -13,7 +13,7 @@
     <artifactId>client</artifactId>
 
     <!--
-        Only things that only the client depends on should be included here (which should be very few); it should NOT depend on another service.
+        Only things that only the client depends on should be included here (which should be very few); it should NOT depend on another service client.
     -->
 
 </project>
