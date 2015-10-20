@@ -14,8 +14,11 @@
 
     <properties>
         <lombok.version>1.16.6</lombok.version>
-        <io.dropwizard.version>0.8.0</io.dropwizard.version>
         <com.fasterxml.jackson.version>2.6.3</com.fasterxml.jackson.version>
+
+        <!--
+            Only things that both the client and service have in common and depend on should be included here (which should be very few).
+        -->
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -24,11 +27,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-            <version>${io.dropwizard.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>

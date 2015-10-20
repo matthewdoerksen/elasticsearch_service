@@ -13,6 +13,10 @@
     <artifactId>service</artifactId>
 
     <dependencies>
+        <!--
+            Only things that only the service depends on should be included here.
+        -->
+
         <dependency>
             <groupId>com.doerksen</groupId>
             <artifactId>client</artifactId>

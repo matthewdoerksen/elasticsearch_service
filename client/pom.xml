@@ -13,13 +13,7 @@
     <artifactId>client</artifactId>
 
     <!--
-    <dependencies>
-        <dependency>
-            <groupId>com.doerksen</groupId>
-            <artifactId>parent</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-    </dependencies>
+        Only things that only the client depends on should be included here (which should be very few); it should NOT depend on another service.
     -->
 
 </project>
