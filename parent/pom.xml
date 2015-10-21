@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <!-- Lombok enables us to remove much of the boilerplate when writing code, see UserDTO -->
         <lombok.version>1.16.6</lombok.version>
         <com.fasterxml.jackson.version>2.6.3</com.fasterxml.jackson.version>
 
