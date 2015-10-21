@@ -16,4 +16,12 @@
         Only things that only the client depends on should be included here (which should be very few); it should NOT depend on another service client.
     -->
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+    </dependencies>
+
 </project>

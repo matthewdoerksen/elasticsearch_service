@@ -22,6 +22,16 @@
             <artifactId>client</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-logging</artifactId>
+            <version>0.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+            <version>0.8.0</version>
+        </dependency>
 
         <!--
            Frameworks used in the service, e.g. Dependency Injection, Database
