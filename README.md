@@ -1,6 +1,8 @@
 # base_project
 A simple Dropwizard project serving as the base for adding on bits and pieces to build a full application.
 
+For a walkthrough of this project, its evolution and tutorials, please see http://restfuljavaforbeginners.weebly.com.
+
 Releases (https://github.com/matthewdoerksen/base_project/releases) are tagged (and released) such that they include the incremental changes from past projects. They should follow the convention of major.minor.revision where:
 
 1) Major changes cause breakage to occur between project versions. If this occurs, what breaks should be noted in the release notes (along with any workarounds, if necessary).
