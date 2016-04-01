@@ -15,9 +15,7 @@ Anyone is free to use this project as the starting point of their own. However, 
 
 Project Articles
 
-1) http://restfuljavaforbeginners.weebly.com/getting-started.html
-
-2) http://restfuljavaforbeginners.weebly.com/getting-the-code.html
+http://restfuljavaforbeginners.weebly.com/articles.html
 
 Thanks!
 Matt Doerksen (matthewdoerksen.dev@gmail.com)
