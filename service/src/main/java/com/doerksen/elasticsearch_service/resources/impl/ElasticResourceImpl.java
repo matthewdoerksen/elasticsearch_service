@@ -1,6 +1,6 @@
 package com.doerksen.elasticsearch_service.resources.impl;
 
-import com.doerksen.elasticsearch_service.BaseProject;
+import com.doerksen.elasticsearch_service.ElasticSearchService;
 import com.doerksen.elasticsearch_service.resources.ElasticResource;
 import org.elasticsearch.action.get.GetResponse;
 
@@ -17,7 +17,7 @@ public class ElasticResourceImpl implements ElasticResource {
     public Map<String, Object> getDocument(String index,
                                            String type,
                                            String id) {
-        GetResponse response = BaseProject.elasticSearchCluster().prepareGet(index, type, id).get();
+        GetResponse response = ElasticSearchService.elasticSearchCluster().prepareGet(index, type, id).get();
         return response.getSourceAsMap();
     }
 }

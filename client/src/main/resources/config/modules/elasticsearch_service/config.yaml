@@ -14,10 +14,11 @@ server:
   - type: http
     port: 10001
 
-dataPath: /tmp/elastic_data
+dataLocation: /tmp/elastic_data
 
-elasticHost: localhost
-elasticPort: 9300
+# location and port number of the elastic search cluster
+host: localhost
+port: 9300
 
 # INFO: more info regarding logging configurations can be found here: https://dropwizard.github.io/dropwizard/0.6.2/manual/core.html#logging
 #logging:
