@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.doerksen</groupId>
-    <artifactId>base_project</artifactId>
+    <artifactId>elasticsearch_service</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>

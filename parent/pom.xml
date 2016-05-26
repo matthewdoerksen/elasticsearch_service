@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>base_project</artifactId>
+        <artifactId>elasticsearch_service</artifactId>
         <groupId>com.doerksen</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -13,9 +13,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <!-- Lombok enables us to remove much of the boilerplate when writing code, see UserDTO -->
-        <lombok.version>1.16.6</lombok.version>
-        <com.fasterxml.jackson.version>2.6.3</com.fasterxml.jackson.version>
+        <org.elasticsearch.elasticsearch.version>2.3.3</org.elasticsearch.elasticsearch.version>
 
         <!--
             Only things that both the client and service have in common and depend on should be included here (which should be very few).
@@ -29,19 +27,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${com.fasterxml.jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${com.fasterxml.jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${org.elasticsearch.elasticsearch.version}</version>
         </dependency>
     </dependencies>
 </project>
