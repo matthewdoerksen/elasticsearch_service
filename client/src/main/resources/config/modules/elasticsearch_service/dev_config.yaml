@@ -1,0 +1,43 @@
+# NOTE: If you find odd characters like <U+2028> (line separator) characters in a git diff, it's likely because
+#       you've copied and pasted text from somewhere and the formatting has come along with it.
+
+# TODO: separate the configuration into client and server components so that clients can modify some public
+#       parameters, such as connection timeouts while "hiding" server side components such as log file
+#       name/directory or database connection strings, etc.
+
+#####################################
+# SERVER SETTINGS
+#####################################
+server:
+  applicationConnectors:
+  - type: http
+    port: 10000
+  adminConnectors:
+  - type: http
+    port: 10001
+
+#####################################
+# ELASTIC CLUSTER SETTINGS
+#####################################
+dataLocation: /tmp/elastic_data
+clusterName: change_the_cluster_name
+
+# location and port number of the elastic search cluster
+host: localhost
+port: 9300
+
+# INFO: more info regarding logging configurations can be found here: https://dropwizard.github.io/dropwizard/0.6.2/manual/core.html#logging
+logging:
+  level: ALL                             # default logger level
+  appenders:
+    - type: console
+      threshold: DEBUG                    # overrides the above logger, only messages equal to or higher priority than INFO are logged to the console
+      timeZone: UTC                      # always use UTC, it removes any ambiguity regarding time
+      target: stdout
+    - type: file
+      currentLogFilename: ./logs/service.log
+      archivedLogFilenamePattern: ./logs/serivce-%d.log
+      threshold: DEBUG                    # overrides the above logger, only messages equal to or higher priority than WARN are logged to file
+      archive: true
+      archivedFileCount: 5               # old log file count, files are rotated daily
+      timeZone: UTC                      # always use UTC, it removes any ambiguity regarding time
