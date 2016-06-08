@@ -37,7 +37,7 @@ logging:
     - type: file
       currentLogFilename: ./logs/service.log
       archivedLogFilenamePattern: ./logs/serivce-%d.log
-      threshold: DEBUG                    # overrides the above logger, only messages equal to or higher priority than WARN are logged to file
+      threshold: INFO                    # overrides the above logger, only messages equal to or higher priority than WARN are logged to file
       archive: true
       archivedFileCount: 5               # old log file count, files are rotated daily
       timeZone: UTC                      # always use UTC, it removes any ambiguity regarding time

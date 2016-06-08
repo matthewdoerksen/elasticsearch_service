@@ -12,10 +12,6 @@ public class ElasticSearchServiceConfiguration extends Configuration {
     @JsonProperty("dataLocation")
     private String dataLocation;
 
-    public String getDataLocation() {
-        return dataLocation;
-    }
-
     @Valid
     @NotNull
     @JsonProperty("host")
@@ -26,6 +22,15 @@ public class ElasticSearchServiceConfiguration extends Configuration {
     @JsonProperty("port")
     private int port;
 
+    @Valid
+    @NotNull
+    @JsonProperty("clusterName")
+    private String clusterName;
+
+    public String getDataLocation() {
+        return dataLocation;
+    }
+
     public String getHost() {
         return host;
     }
@@ -34,4 +39,7 @@ public class ElasticSearchServiceConfiguration extends Configuration {
         return port;
     }
 
+    public String getClusterName() {
+        return clusterName;
+    }
 }

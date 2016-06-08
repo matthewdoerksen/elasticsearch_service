@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>client</artifactId>
+    <artifactId>elasticsearch-client</artifactId>
 
     <!--
         Only things that only the client depends on should be included here (which should be very few); it should NOT depend on another service client.
