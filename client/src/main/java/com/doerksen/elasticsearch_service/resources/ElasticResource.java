@@ -1,21 +1,38 @@
 package com.doerksen.elasticsearch_service.resources;
 
+import com.doerksen.utilities.Response;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Map;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/elastic")
 public interface ElasticResource {
 
-    // TODO - replace me with a Response wrapper so that we can return the
-    //        GetResponse from elastic (which we can't directly here because
-    //        a BadRequestException gets thrown).
-
     @GET
     @Path("/{index}/{type}/{id}")
-    Map<String, Object> getDocument(@PathParam("index") String index,
-                                    @PathParam("type") String type,
-                                    @PathParam("id") String id);
+    Response<String> getDocument(@PathParam("index") final String index,
+                                 @PathParam("type") final String type,
+                                 @PathParam("id") final String id);
+
+    @POST
+    @Path("/{index}/{type}/{id}")
+    Response<String> postDocument(@PathParam("index") final String index,
+                                  @PathParam("type") final String type,
+                                  @PathParam("id") final String id,
+                                  String documentJSON);
+
+    @PUT
+    @Path("/{index}/{type}/{id}")
+    Response<String> putDocument(@PathParam("index") final String index,
+                                 @PathParam("type") final String type,
+                                 @PathParam("id") final String id,
+                                 String documentJSON);
+
+    @DELETE
+    @Path("/{index}/{type}/{id}")
+    Response<String> deleteDocument(@PathParam("index") final String index,
+                                    @PathParam("type") final String type,
+                                    @PathParam("id") final String id);
 }

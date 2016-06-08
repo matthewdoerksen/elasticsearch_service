@@ -14,8 +14,6 @@ import java.net.InetAddress;
 
 public class ElasticSearchService extends Application<ElasticSearchServiceConfiguration> {
 
-    private static Client elasticSearchCluster;
-
     public static void main(String[] args) throws Exception {
         new ElasticSearchService().run(args);
     }
@@ -23,27 +21,24 @@ public class ElasticSearchService extends Application<ElasticSearchServiceConfig
     @Override
     public void run(ElasticSearchServiceConfiguration configuration, Environment environment) throws Exception {
 
-        // TODO - work on getting a cluster up and running and verifying if
-        //        these settings make sense for a clu
+        // TODO - work on getting a cluster up and running and verifying if these settings make sense for a cluster
 
         Node elasticNode = NodeBuilder.nodeBuilder()
                 .data(true)
-                .settings(Settings.builder()
-                        .put("path.home", configuration.getDataLocation()))
+                .settings(Settings.settingsBuilder()
+                        .put("path.home", configuration.getDataLocation())
+                        .put("cluster.name", configuration.getClusterName()))
                 .build();
 
         elasticNode.start();
         Settings settings = Settings.settingsBuilder()
                 .put("client.transport.sniff", true)
+                .put("cluster.name", configuration.getClusterName())
                 .build();
 
-        elasticSearchCluster = TransportClient.builder().settings(settings).build()
+        Client elasticSearchCluster = TransportClient.builder().settings(settings).build()
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(configuration.getHost()), configuration.getPort()));
 
-        environment.jersey().register(new ElasticResourceImpl());
-    }
-
-    public static Client elasticSearchCluster() {
-        return elasticSearchCluster;
+        environment.jersey().register(new ElasticResourceImpl(elasticSearchCluster));
     }
 }
