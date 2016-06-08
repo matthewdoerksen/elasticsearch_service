@@ -1,10 +1,17 @@
 package com.doerksen.elasticsearch_service.tests.unit;
 
 import com.doerksen.elasticsearch_service.resources.ElasticResource;
+import com.doerksen.utilities.MessageFormatter;
+import com.doerksen.utilities.Response;
+import com.doerksen.utilities.ResponseImpl;
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ElasticResourceImplTest {
 
@@ -21,45 +28,46 @@ public class ElasticResourceImplTest {
         elasticResource = mock(ElasticResource.class);
     }
 
-    /*@Test()
+    @Test()
     public void getDocumentExceptionResponseTest() {
-        String errorMsg = String.format("Unable to get document for index {}, type {} and id {}.", "index", "type", "id");
+        String errorMsg = MessageFormatter.format("Unable to get document for index {}, type {} and id {}.", "index", "type", "id");
         Response<String> getResponseWithErrorMsg = new ResponseImpl<>(errorMsg);
         when(elasticResource.getDocument("index", "type", "id")).thenReturn(getResponseWithErrorMsg);
 
         Response<String> actualResponse = elasticResource.getDocument("index", "type", "id");
         assertEquals(getResponseWithErrorMsg.isError(), actualResponse.isError());
         assertTrue(getResponseWithErrorMsg.getObject().equals(actualResponse.getObject()));
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void postDocumentExceptionResponseTest() {
-        Response<String> postResponseWithErrorMsg = new ResponseImpl<>("Unable to create document for index {}, type {} and id {}.", "index", "type", "id");
+        String errorMsg = MessageFormatter.format("Unable to create document for index {}, type {} and id {}.", "index", "type", "id");
+        Response<String> postResponseWithErrorMsg = new ResponseImpl<>(errorMsg);
         when(elasticResource.postDocument("index", "type", "id", "document")).thenReturn(postResponseWithErrorMsg);
 
-        Response<Boolean> actualResponse = elasticResource.postDocument("index", "type", "id", "document");
+        Response<String> actualResponse = elasticResource.postDocument("index", "type", "id", "document");
         assertEquals(postResponseWithErrorMsg.isError(), actualResponse.isError());
-        assertEquals(postResponseWithErrorMsg.statusCode(), actualResponse.statusCode());
+        assertEquals(postResponseWithErrorMsg.getStatusCode(), actualResponse.getStatusCode());
     }
 
     @Test
     public void putDocumentExceptionResponseTest() {
-        Response<Boolean> putResponseWithErrorMsg = ResponseImpl.error(404);
+        Response<String> putResponseWithErrorMsg = ResponseImpl.error(404);
         when(elasticResource.putDocument("index", "type", "id", "document")).thenReturn(putResponseWithErrorMsg);
 
-        Response<Boolean> actualResponse = elasticResource.putDocument("index", "type", "id", "document");
+        Response<String> actualResponse = elasticResource.putDocument("index", "type", "id", "document");
         assertEquals(putResponseWithErrorMsg.isError(), actualResponse.isError());
-        assertEquals(putResponseWithErrorMsg.statusCode(), actualResponse.statusCode());
+        assertEquals(putResponseWithErrorMsg.getStatusCode(), actualResponse.getStatusCode());
     }
 
     @Test
     public void deleteDocumentExceptionResponseTest() {
-        Response<Boolean> deleteResponseWithErrorMsg = ResponseImpl.error(404);
+        Response<String> deleteResponseWithErrorMsg = ResponseImpl.error(404);
         when(elasticResource.deleteDocument("index", "type", "id")).thenReturn(deleteResponseWithErrorMsg);
 
-        Response<Boolean> actualResponse = elasticResource.deleteDocument("index", "type", "id");
+        Response<String> actualResponse = elasticResource.deleteDocument("index", "type", "id");
         assertEquals(deleteResponseWithErrorMsg.isError(), actualResponse.isError());
-        assertEquals(deleteResponseWithErrorMsg.statusCode(), actualResponse.statusCode());
+        assertEquals(deleteResponseWithErrorMsg.getStatusCode(), actualResponse.getStatusCode());
     }
 
     @Test()
@@ -74,31 +82,31 @@ public class ElasticResourceImplTest {
 
     @Test
     public void postDocumentResponseTest() {
-        Response<Boolean> postResponse = ResponseImpl.success();
+        Response<String> postResponse = ResponseImpl.success(200);
         when(elasticResource.postDocument("index", "type", "id", "{json:\"what a document!\"}")).thenReturn(postResponse);
 
-        Response<Boolean> actualResponse = elasticResource.postDocument("index", "type", "id", "{json:\"what a document!\"}");
+        Response<String> actualResponse = elasticResource.postDocument("index", "type", "id", "{json:\"what a document!\"}");
         assertEquals(postResponse.isSuccess(), actualResponse.isSuccess());
-        assertEquals(postResponse.statusCode(), actualResponse.statusCode());
+        assertEquals(postResponse.getStatusCode(), actualResponse.getStatusCode());
     }
 
     @Test
     public void putDocumentResponseTest() {
-        Response<Boolean> putResponse = ResponseImpl.success();
+        Response<String> putResponse = ResponseImpl.success(200);
         when(elasticResource.putDocument("index", "type", "id", "{json:\"update!\"}")).thenReturn(putResponse);
 
-        Response<Boolean> actualResponse = elasticResource.putDocument("index", "type", "id", "{json:\"update!\"}");
+        Response<String> actualResponse = elasticResource.putDocument("index", "type", "id", "{json:\"update!\"}");
         assertEquals(putResponse.isSuccess(), actualResponse.isSuccess());
-        assertEquals(putResponse.statusCode(), actualResponse.statusCode());
+        assertEquals(putResponse.getStatusCode(), actualResponse.getStatusCode());
     }
 
     @Test
     public void deleteDocumentResponseTest() {
-        Response<Boolean> deleteResponse = ResponseImpl.success();
+        Response<String> deleteResponse = ResponseImpl.success(200);
         when(elasticResource.deleteDocument("index", "type", "id")).thenReturn(deleteResponse);
 
-        Response<Boolean> actualResponse = elasticResource.deleteDocument("index", "type", "id");
+        Response<String> actualResponse = elasticResource.deleteDocument("index", "type", "id");
         assertEquals(deleteResponse.isSuccess(), actualResponse.isSuccess());
-        assertEquals(deleteResponse.statusCode(), actualResponse.statusCode());
-    }*/
+        assertEquals(deleteResponse.getStatusCode(), actualResponse.getStatusCode());
+    }
 }
