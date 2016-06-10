@@ -19,8 +19,8 @@ server:
 #####################################
 # ELASTIC CLUSTER SETTINGS
 #####################################
-dataLocation: /tmp/elastic_data
-clusterName: change_the_cluster_name
+dataLocation: /tmp/qa/elastic_data
+clusterName: qa
 
 # location and port number of the elastic search cluster
 host: localhost

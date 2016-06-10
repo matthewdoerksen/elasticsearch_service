@@ -19,8 +19,8 @@ server:
 #####################################
 # ELASTIC CLUSTER SETTINGS
 #####################################
-dataLocation: /tmp/prod/elastic_data
-clusterName: prod
+dataLocation: /tmp/integration_testing/elastic_data
+clusterName: integration_testing_not_for_general_use
 
 # location and port number of the elastic search cluster
 host: localhost
