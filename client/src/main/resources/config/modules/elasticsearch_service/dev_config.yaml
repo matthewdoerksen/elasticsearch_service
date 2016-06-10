@@ -31,7 +31,7 @@ logging:
   level: ALL                             # default logger level
   appenders:
     - type: console
-      threshold: INFO                    # overrides the above logger, only messages equal to or higher priority than INFO are logged to the console
+      threshold: DEBUG                    # overrides the above logger, only messages equal to or higher priority than INFO are logged to the console
       timeZone: UTC                      # always use UTC, it removes any ambiguity regarding time
       target: stdout
     - type: file
