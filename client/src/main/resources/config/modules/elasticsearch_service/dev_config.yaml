@@ -19,8 +19,8 @@ server:
 #####################################
 # ELASTIC CLUSTER SETTINGS
 #####################################
-dataLocation: /tmp/elastic_data
-clusterName: change_the_cluster_name
+dataLocation: /tmp/dev/elastic_data
+clusterName: dev
 
 # location and port number of the elastic search cluster
 host: localhost
@@ -31,7 +31,7 @@ logging:
   level: ALL                             # default logger level
   appenders:
     - type: console
-      threshold: DEBUG                    # overrides the above logger, only messages equal to or higher priority than INFO are logged to the console
+      threshold: INFO                    # overrides the above logger, only messages equal to or higher priority than INFO are logged to the console
       timeZone: UTC                      # always use UTC, it removes any ambiguity regarding time
       target: stdout
     - type: file

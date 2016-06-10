@@ -1,5 +1,6 @@
 package com.doerksen.elasticsearch_service;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
@@ -26,6 +27,9 @@ public class ElasticSearchServiceConfiguration extends Configuration {
     @NotNull
     @JsonProperty("clusterName")
     private String clusterName;
+
+    @JsonCreator
+    private ElasticSearchServiceConfiguration() {}
 
     public String getDataLocation() {
         return dataLocation;

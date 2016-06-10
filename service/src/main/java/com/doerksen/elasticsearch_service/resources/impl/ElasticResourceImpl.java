@@ -7,14 +7,17 @@ import com.doerksen.utilities.ResponseImpl;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.io.stream.NotSerializableExceptionWrapper;
 import org.elasticsearch.index.IndexNotFoundException;
-import org.elasticsearch.index.engine.VersionConflictEngineException;
+import org.elasticsearch.index.mapper.MapperParsingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ElasticResourceImpl implements ElasticResource {
 
-    private static final Logger LOG = Logger.getLogger(ElasticResourceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ElasticResourceImpl.class);
 
     private final Client esCluster;
 
@@ -33,12 +36,13 @@ public class ElasticResourceImpl implements ElasticResource {
 
         try {
             return new ResponseImpl<>(esCluster.prepareGet(index, type, id).get().getSourceAsString());
+        } catch (IndexNotFoundException e) {
+            return new ResponseImpl<>(MessageFormatter.format("No document found for index {}, type {}, and id {}.", index, type, id), HttpStatus.SC_NOT_FOUND, e);
         } catch (Exception e) {
-            return responseBuilder(MessageFormatter.format("Unable to get document for index {}, type {} and id {}.", index, type, id), e);
+            return responseBuilder(MessageFormatter.format("Error retrieving document at index {}, type {} and id {}.", index, type, id), e);
         }
     }
 
-    // TODO - status codes
     public Response<String> postDocument(final String index,
                                          final String type,
                                          final String id,
@@ -49,14 +53,29 @@ public class ElasticResourceImpl implements ElasticResource {
         if (inputValidation.isError()) return inputValidation;
 
         try {
-            esCluster.prepareIndex(index, type, id).get();
-            return ResponseImpl.success(HttpStatus.SC_CREATED);
+            Response<String> document = getDocument(index, type, id);
+            // if we don't find it, create it, otherwise tell them to update it instead
+            if (document.isError()) {
+                esCluster.prepareIndex(index, type, id).setSource(documentJSON).get();
+                return ResponseImpl.success(HttpStatus.SC_CREATED);
+            } else {
+                return new ResponseImpl<>(MessageFormatter.format("Unable to create document {} for index {}, type {} and id {} because the document already exists. Use put to update the document.", documentJSON, index, type, id), HttpStatus.SC_CONFLICT, false);
+            }
+        } catch (MapperParsingException e) {
+            return new ResponseImpl<>(MessageFormatter.format("Error creating document {} for index {}, type {} and id {} because the JSON is malformed.", documentJSON, index, type, id), HttpStatus.SC_BAD_REQUEST, e);
         } catch (Exception e) {
-            return responseBuilder(MessageFormatter.format("Unable to create document {} for index {}, type {}, id {}.", documentJSON, index, type, id), e);
+            return responseBuilder(MessageFormatter.format("Error creating document {} for index {}, type {}, id {}.", documentJSON, index, type, id), e);
         }
     }
 
-    // TODO - status codes
+    /**
+     * NOTE: Once a document exists, there is no check to ensure it is valid JSON when you update it
+     * @param index
+     * @param type
+     * @param id
+     * @param documentJSON
+     * @return
+     */
     public Response<String> putDocument(final String index,
                                         final String type,
                                         final String id,
@@ -67,14 +86,23 @@ public class ElasticResourceImpl implements ElasticResource {
         if (inputValidation.isError()) return inputValidation;
 
         try {
-            esCluster.prepareUpdate(index, type, id).get();
-            return ResponseImpl.success(HttpStatus.SC_OK);
+            Response<String> document = getDocument(index, type, id);
+            // update if we find it, otherwise tell them to create it first
+            if (document.isSuccess()) {
+                esCluster.prepareUpdate(index, type, id)
+                        .setDoc(documentJSON)
+                        .get();
+                return ResponseImpl.success(HttpStatus.SC_OK);
+            } else {
+                return new ResponseImpl<>(MessageFormatter.format("Unable to put document {} for index {}, type {} and id {} because the document does not exist. Post the document before attempting to update it.", documentJSON, index, type, id), HttpStatus.SC_NOT_FOUND, false);
+            }
+        } catch (NotSerializableExceptionWrapper e) {
+            return new ResponseImpl<>(MessageFormatter.format("Error updating document {} for index {}, type {} and id {} because the JSON is malformed.", documentJSON, index, type, id), HttpStatus.SC_BAD_REQUEST, e);
         } catch (Exception e) {
-            return responseBuilder(MessageFormatter.format("Unable to update document {} for index {}, type {} and id {}.", documentJSON, index, type, id), e);
+            return responseBuilder(MessageFormatter.format("Error updating document {} for index {}, type {} and id {}.", documentJSON, index, type, id), e);
         }
     }
 
-    // TODO - status codes
     public Response<String> deleteDocument(final String index,
                                            final String type,
                                            final String id) {
@@ -84,10 +112,14 @@ public class ElasticResourceImpl implements ElasticResource {
         if (inputValidation.isError()) return inputValidation;
 
         try {
-            esCluster.prepareDelete(index, type, id).get();
-            return ResponseImpl.success(HttpStatus.SC_OK);
+            DeleteResponse deleted = esCluster.prepareDelete(index, type, id).get();
+            if (deleted.isFound()) {
+                return ResponseImpl.success(HttpStatus.SC_OK);
+            } else {
+                return new ResponseImpl<>(MessageFormatter.format("Unable to delete document for index {}, type {} and id {} because it does not exist.", index, type, id), HttpStatus.SC_NOT_FOUND, false);
+            }
         } catch (Exception e) {
-            return responseBuilder(MessageFormatter.format("Unable to delete document for index {}, type {} and id {}.", index, type, id), e);
+            return responseBuilder(MessageFormatter.format("Error deleting document for index {}, type {} and id {}.", index, type, id), e);
         }
     }
 
@@ -129,19 +161,8 @@ public class ElasticResourceImpl implements ElasticResource {
      */
     private Response<String> responseBuilder(final String errorMsg,
                                              final Exception e) {
-        Response<String> response = new ResponseImpl<>(errorMsg, HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
-
-        if (e instanceof IndexNotFoundException) {
-            response = new ResponseImpl<>(errorMsg, HttpStatus.SC_NOT_FOUND, e);
-        } else if (e instanceof VersionConflictEngineException)
-
-        if (response.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-            LOG.info("Unable to find a better status code for exception {}; defaulting to 500.", e);
-        } else {
-            String logLine = MessageFormatter.format("An error occurred while processing the request {}.", response.getMessage());
-            LOG.debug(logLine, e);
-        }
-
-        return response;
+        // set to warning because it's important that we send back a helpful status code to the caller
+        LOG.warn("Unable to find a better status code for error message {}; defaulting to 500.", errorMsg, e);
+        return new ResponseImpl<>(errorMsg, HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
     }
 }

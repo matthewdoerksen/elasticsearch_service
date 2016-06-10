@@ -7,12 +7,14 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class ElasticSearchService extends Application<ElasticSearchServiceConfiguration> {
+
+    private Client esCluster;
 
     public static void main(String[] args) throws Exception {
         new ElasticSearchService().run(args);
@@ -23,22 +25,36 @@ public class ElasticSearchService extends Application<ElasticSearchServiceConfig
 
         // TODO - work on getting a cluster up and running and verifying if these settings make sense for a cluster
 
-        Node elasticNode = NodeBuilder.nodeBuilder()
+        configureAndStartNode(configuration);
+
+        esCluster = configureClusterAndGetClient(configuration);
+
+        environment.jersey().register(new ElasticResourceImpl(esCluster));
+    }
+
+    private void configureAndStartNode(ElasticSearchServiceConfiguration configuration) {
+        NodeBuilder.nodeBuilder()
                 .data(true)
                 .settings(Settings.settingsBuilder()
                         .put("path.home", configuration.getDataLocation())
                         .put("cluster.name", configuration.getClusterName()))
-                .build();
+                .build()
+                .start();
+    }
 
-        elasticNode.start();
-        Settings settings = Settings.settingsBuilder()
-                .put("client.transport.sniff", true)
-                .put("cluster.name", configuration.getClusterName())
-                .build();
+    private Client configureClusterAndGetClient(ElasticSearchServiceConfiguration configuration) throws UnknownHostException {
+        return TransportClient.builder()
+                .settings(Settings.settingsBuilder()
+                        .put("client.transport.sniff", true)
+                        .put("cluster.name", configuration.getClusterName())
+                        .build())
+                .build()
+                .addTransportAddress(new InetSocketTransportAddress(
+                        InetAddress.getByName(configuration.getHost()),
+                        configuration.getPort()));
+    }
 
-        Client elasticSearchCluster = TransportClient.builder().settings(settings).build()
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(configuration.getHost()), configuration.getPort()));
-
-        environment.jersey().register(new ElasticResourceImpl(elasticSearchCluster));
+    public Client getClient() {
+        return esCluster;
     }
 }
