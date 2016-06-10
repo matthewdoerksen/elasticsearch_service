@@ -36,7 +36,7 @@ public class ElasticResourceImpl implements ElasticResource {
 
         try {
             return new ResponseImpl<>(esCluster.prepareGet(index, type, id).get().getSourceAsString());
-        } catch (IndexNotFoundException e) {
+        } catch (NullPointerException | IndexNotFoundException e) {
             return new ResponseImpl<>(MessageFormatter.format("No document found for index {}, type {}, and id {}.", index, type, id), HttpStatus.SC_NOT_FOUND, e);
         } catch (Exception e) {
             return responseBuilder(MessageFormatter.format("Error retrieving document at index {}, type {} and id {}.", index, type, id), e);
