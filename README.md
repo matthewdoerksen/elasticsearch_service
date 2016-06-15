@@ -30,3 +30,6 @@ This project makes a couple of assumptions regarding your machine setup:
 
 2) That you have downloaded the newrelic.jar and placed it in your home directory.
     2.1) You should make sure that the version of the New Relic API (in the client) matches that of the newrelic jar.
+
+3) That the NEW_RELIC_LICENSE_KEY environment variable has been set appropriately.
+   e.g. export NEW_RELIC_LICENSE_KEY=12345
