@@ -1,5 +1,6 @@
 package com.doerksen.elasticsearch_service;
 
+import com.doerksen.elasticsearch_service.resources.ElasticResource;
 import com.doerksen.elasticsearch_service.resources.impl.ElasticResourceImpl;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
@@ -29,7 +30,10 @@ public class ElasticSearchService extends Application<ElasticSearchServiceConfig
 
         esCluster = configureClusterAndGetClient(configuration);
 
-        environment.jersey().register(new ElasticResourceImpl(esCluster));
+        // wire up the resource so that NewRelic can send stats back for methods annotated with @Trace
+        ElasticResource elasticResource = new ElasticResourceImpl(esCluster);
+
+        environment.jersey().register(elasticResource);
     }
 
     private void configureAndStartNode(ElasticSearchServiceConfiguration configuration) {

@@ -19,3 +19,14 @@ http://restfuljavaforbeginners.weebly.com/articles.html
 
 Thanks!
 Matt Doerksen (matthewdoerksen.dev@gmail.com)
+
+
+
+Notes:
+
+This project makes a couple of assumptions regarding your machine setup:
+
+1) That you already have ElasticSearch installed.
+
+2) That you have downloaded the newrelic.jar and placed it in your home directory.
+    2.1) You should make sure that the version of the New Relic API (in the client) matches that of the newrelic jar.
