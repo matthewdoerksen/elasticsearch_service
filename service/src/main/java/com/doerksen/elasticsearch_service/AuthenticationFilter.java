@@ -6,10 +6,11 @@ import com.doerksen.utilities.MessageFormatter;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.elasticsearch.common.collect.Tuple;
 
-import javax.security.sasl.AuthenticationException;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         Optional<String> accessToken = Optional.ofNullable(requestContext.getHeaders().getFirst("access_token"));
 
         if (!clientName.isPresent() || !accessToken.isPresent()) {
-            throw new AuthenticationException("Client name and/or API key was invalid. Remember to set them in the request header.");
+            throw new WebApplicationException("Client name and/or API key was invalid. Remember to set them in the request header.", HttpStatus.SC_UNAUTHORIZED);
         }
 
         // pull out the elasticsearch index and type from the URI so we can check that we have the correct permissions

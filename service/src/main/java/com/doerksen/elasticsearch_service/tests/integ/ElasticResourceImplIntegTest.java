@@ -20,6 +20,11 @@ import java.nio.file.Paths;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Tests the CRUD methods once they are accepted by the server. Does not test authentication or authorization.
+ *
+ * NOTE: cannot be run simultaneously with ElasticResourceAuthenticationAuthorizationIntegTest because it also spins up the ES cluster.
+ */
 public class ElasticResourceImplIntegTest {
 
     private static ElasticResource elasticResource;
