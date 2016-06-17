@@ -1,4 +1,4 @@
-package com.doerksen.elasticsearch_service.resources.impl;
+package com.doerksen.elasticsearch_service.auth;
 
 import com.google.common.collect.Sets;
 import org.apache.http.HttpStatus;
