@@ -1,9 +1,11 @@
 package com.doerksen.elasticsearch_service.resources.impl;
 
 import com.google.common.collect.Sets;
+import org.apache.http.HttpStatus;
 import org.elasticsearch.common.collect.Tuple;
 
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.WebApplicationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,6 +36,14 @@ public class AuthorizationValidator {
         this.put(("Combinatrix" + "12345").hashCode(), new HashMap<Tuple<String, String>, Set<ACCESS_TYPE>>() {{
             this.put(new Tuple<>("users", "user"), Sets.newHashSet(ACCESS_TYPE.READ));
         }});
+
+
+        this.put(("integ" + "12345").hashCode(), new HashMap<Tuple<String, String>, Set<ACCESS_TYPE>>() {{
+            this.put(new Tuple<>("users", "user"), Sets.newHashSet(ACCESS_TYPE.CREATE));
+        }});
+        this.put(("integ" + "123").hashCode(), new HashMap<Tuple<String, String>, Set<ACCESS_TYPE>>() {{
+            this.put(new Tuple<>("users", "user"), Sets.newHashSet(ACCESS_TYPE.READ));
+        }});
     }};
 
     public static boolean isAuthorized(final String clientName,
@@ -42,7 +52,7 @@ public class AuthorizationValidator {
                                        final Tuple<String, String> indexAndType) throws NotAuthorizedException {
         Set<ACCESS_TYPE> grantedPermissions = temp.getOrDefault((clientName + accessToken).hashCode(), new HashMap<>()).getOrDefault(indexAndType, new HashSet<>());
         if (!grantedPermissions.contains(accessType)) {
-            throw new NotAuthorizedException("Application/API key is not authorized to perform the request.");
+            throw new WebApplicationException("Application/API key is not authorized to perform the request.", HttpStatus.SC_FORBIDDEN);
         }
 
         return true;
