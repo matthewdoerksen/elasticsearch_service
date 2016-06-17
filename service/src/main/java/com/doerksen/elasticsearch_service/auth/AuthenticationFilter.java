@@ -1,7 +1,6 @@
-package com.doerksen.elasticsearch_service;
+package com.doerksen.elasticsearch_service.auth;
 
-import com.doerksen.elasticsearch_service.resources.impl.AuthorizationValidator;
-import com.doerksen.elasticsearch_service.resources.impl.AuthorizationValidator.ACCESS_TYPE;
+import com.doerksen.elasticsearch_service.auth.AuthorizationValidator.ACCESS_TYPE;
 import com.doerksen.utilities.MessageFormatter;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;

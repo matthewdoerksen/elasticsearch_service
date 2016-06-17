@@ -1,5 +1,6 @@
 package com.doerksen.elasticsearch_service;
 
+import com.doerksen.elasticsearch_service.auth.AuthenticationFilter;
 import com.doerksen.elasticsearch_service.resources.ElasticResource;
 import com.doerksen.elasticsearch_service.resources.impl.ElasticResourceImpl;
 import io.dropwizard.Application;
