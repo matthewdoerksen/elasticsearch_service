@@ -28,6 +28,12 @@ public class ElasticSearchServiceConfiguration extends Configuration {
     @JsonProperty("clusterName")
     private String clusterName;
 
+    // default to true so security is enabled unless overridden
+    @Valid
+    @NotNull
+    @JsonProperty("authRequired")
+    private boolean authRequired = true;
+
     @JsonCreator
     private ElasticSearchServiceConfiguration() {}
 
@@ -45,5 +51,9 @@ public class ElasticSearchServiceConfiguration extends Configuration {
 
     public String getClusterName() {
         return clusterName;
+    }
+
+    public boolean getAuthRequired() {
+        return authRequired;
     }
 }

@@ -36,9 +36,11 @@ public class ElasticSearchService extends Application<ElasticSearchServiceConfig
 
         environment.jersey().register(elasticResource);
 
-        // register our authentication filter so that we verify the app + token and permissions
-        // before we pass the request on to the actual endpoint
-        environment.jersey().register(new AuthenticationFilter());
+        if (configuration.getAuthRequired()) {
+            // register our authentication filter so that we verify the app + token and permissions
+            // before we pass the request on to the actual endpoint
+            environment.jersey().register(new AuthenticationFilter());
+        }
     }
 
     private void configureAndStartNode(ElasticSearchServiceConfiguration configuration) {

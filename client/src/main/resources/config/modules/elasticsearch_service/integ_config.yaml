@@ -16,6 +16,11 @@ server:
   - type: http
     port: 10001
 
+# (enabled by default if this property is missing)
+# force anyone calling this service to pass the application name and an access token
+# that is then checked against the resource requested and the permissions that app + token has been granted
+authRequired: true
+
 #####################################
 # ELASTIC CLUSTER SETTINGS
 #####################################
