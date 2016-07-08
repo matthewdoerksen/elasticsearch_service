@@ -279,12 +279,12 @@ dev:
   app_name: ElasticSearch (DEV)
   log_file_name: newrelic_agent_dev.log
 
-test:
+integ:
   <<: *default_settings
-  app_name: ElasticSearch (TEST)
-  log_file_name: newrelic_agent_test.log
+  app_name: ElasticSearch (INTEG)
+  log_file_name: newrelic_agent_integ.log
 
-production:
+prod:
   <<: *default_settings
 
 qa:
