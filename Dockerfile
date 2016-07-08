@@ -23,7 +23,7 @@ FROM elasticsearch
 # expose our service to the outside world
 EXPOSE 10000
 
-ADD /service/target/elasticsearch-server-1.0-SNAPSHOT.jar elasticsearch_server.jar
+ADD /service/target/elasticsearch-server-1.0.0.jar elasticsearch_server.jar
 
 # include our newrelic yaml so that we can push stats
 ADD newrelic.yml newrelic.yml
