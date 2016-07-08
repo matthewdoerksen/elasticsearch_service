@@ -7,6 +7,8 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.elasticsearch.common.collect.Tuple;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.WebApplicationException;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class AuthenticationFilter implements ContainerRequestFilter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     private static ACCESS_TYPE getAccessTypeForMethod(final String method) {
         Preconditions.checkArgument(StringUtils.isNotBlank(method));
@@ -43,6 +47,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     public void filter(final ContainerRequestContext requestContext) throws IOException {
         Optional<String> clientName = Optional.ofNullable(requestContext.getHeaders().getFirst("app_name"));
         Optional<String> accessToken = Optional.ofNullable(requestContext.getHeaders().getFirst("access_token"));
+
+        LOG.debug("Incoming request with application name: {} and access token: {}", clientName, accessToken);
 
         if (!clientName.isPresent() || !accessToken.isPresent()) {
             throw new WebApplicationException("Client name and/or API key was invalid. Remember to set them in the request header.", HttpStatus.SC_UNAUTHORIZED);
