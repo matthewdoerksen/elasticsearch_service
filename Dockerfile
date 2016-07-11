@@ -32,6 +32,7 @@ ADD /service/target/elasticsearch-server-${BUILD_VERSION}.jar elasticsearch_serv
 
 # include our newrelic yaml so that we can push stats
 ADD newrelic.yml newrelic.yml
+ADD newrelic.jar newrelic.jar
 
 # add each of our configs so that we can run in any mode (pending the appropriate environment variable is set
 ADD client/src/main/resources/config/modules/elasticsearch_service/dev_config.yaml dev_config.yaml
