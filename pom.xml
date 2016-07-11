@@ -15,7 +15,7 @@
     </modules>
 
     <properties>
-        <jvm.version>1.9</jvm.version>
+        <jvm.version>1.8</jvm.version>
     </properties>
 
     <distributionManagement>
