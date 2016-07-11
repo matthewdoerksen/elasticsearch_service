@@ -23,7 +23,12 @@ FROM elasticsearch
 # expose our service to the outside world
 EXPOSE 10000
 
-ADD /service/target/elasticsearch-server-1.0.0.jar elasticsearch_server.jar
+# make the builder pass in the appropriate version number so we choose the correct jar
+# leave empty so the build fails (can't find jar) if it's not provided and correct
+ARG BUILD_VERSION
+
+# pull the built jar
+ADD /service/target/elasticsearch-server-${BUILD_VERSION}.jar elasticsearch_server.jar
 
 # include our newrelic yaml so that we can push stats
 ADD newrelic.yml newrelic.yml
